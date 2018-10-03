@@ -1,0 +1,865 @@
+---
+title: "Introduction to R"
+subtitle: "UW Tacoma"  
+author: "Charles Lanfear"
+date: "Oct 11, 2018<br>Updated: `r gsub(' 0', ' ', format(Sys.Date(), format='%b %d, %Y'))`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: tomorrow-night-bright
+      highlightLines: true
+      countIncrementalSlides: false
+      titleSlideClass: ["center","top"]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+
+csss508css <- list(
+     ".hljs-tomorrow-night-bright .hljs" = list(
+        "background" = "#10102c",
+        "border-radius"="5px"),
+     ".remark-inline-code" = list(
+        "background" = "#E0E0E0",
+        "color" = "#10102c",
+        "border-radius" = "3px",
+        "padding" = "2px"),
+     ".inverse .remark-inline-code" = list(
+        "background" = "#10102c",
+        "color" = "#ececf8",
+        "border-radius" = "3px",
+        "padding" = "2px"),
+     ".small" = list("font-size" = "75%"),
+     ".remark-code-line-highlighted" = list(
+        "background-color" = "rgba(255,0,255,0.2)"),
+     "sup" = list("font-size" = "14px"),
+     "h1, h2, h3" = list(
+        "margin-top"=".25em", 
+        "margin-bottom"=".25em"),
+     ".pull-left60" = list(
+        "float" = "left",
+        "width" = "58%" ),
+     ".pull-right40" = list(
+        "float" = "right",
+        "width" = "38%" ),
+     ".pull-right30" = list(
+        "float" = "right",
+        "width" = "30%" ),
+     "a" = list("text-decoration" = "underline"),
+     ".inverse a" = list("color" = "#cbd3a3"),
+     "body" = list("line-height" = "1.4")
+    )
+
+mono_accent(base_color = "#342c5c",
+            code_font_google = google_font("Fira Mono"),
+            header_font_google = google_font("Quattrocento"),
+            extra_css = csss508css,
+            title_slide_background_image = "https://raw.githubusercontent.com/clanfear/CSSS508/master/Lectures/Week1/img/title_slide_img.png",
+            title_slide_background_position = "bottom",
+            title_slide_background_size = "contain"
+)
+```
+
+
+# Overview
+
+1. R and RStudio Orientation
+
+2. Packages
+
+3. Creating and Using Objects
+
+4. Dataframes and Indexing
+
+5. Basic Analyses
+
+7. Resources for Further Learning
+
+---
+class: inverse
+
+# R and RStudio
+## A quick orientation
+
+---
+# Why R?
+
+R is a programming language built for statistical computing.
+
+If one already knows Stata or similar software, why use R?
+--
+
+* R is *free*, so you don't need a terminal server or license.
+--
+
+* R has a *very* large community for support and packages.
+--
+
+* R can handle virtually any data format.
+--
+
+* R makes replication *easy*.
+--
+
+* R is a *language* so it can do *everything*.
+--
+
+* R is similar to other programming languages.
+
+---
+
+# R Studio
+
+R Studio is a "front-end" or integrated development environment (IDE) for R that can make your life *easier*.
+
+--
+
+RStudio can:
+--
+
+* Organize your code, output, and plots.
+--
+
+* Auto-complete code and highlight syntax.
+--
+
+* Help view data and objects.
+--
+
+* Enable easy integration of R code into documents.
+
+---
+# Getting Started
+
+Open up RStudio now and choose *File > New File > R Script*.
+
+Then, let's get oriented with the interface:
+
+* *Top Left*: Code **editor** pane, data viewer (browse with tabs)
+
+* *Bottom Left*: **Console** for running code (`>` prompt)
+
+* *Top Right*: List of objects in **environment**, code **history** tab.
+
+* *Bottom Right*: Tabs for browsing files, viewing plots, managing packages, and viewing help files.
+
+You can change the layout in *Preferences > Pane Layout*
+
+---
+
+# Editing and Running Code
+
+There are several ways to run R code in RStudio:
+--
+
+* Highlight lines in the **editor** window and click *Run* at the top or hit `Ctrl+Enter` or `⌘+Enter` to run them all.
+
+--
+
+* With your **caret** on a line you want to run, hit `Ctrl+Enter` or `⌘+Enter`. Note your caret moves to the next line, so you can run code sequentially with repeated presses. 
+
+--
+
+* Type individual lines in the **console** and press `Enter`.
+
+--
+
+The console will show the lines you ran followed by any printed output.
+
+---
+
+# Incomplete Code
+
+If you mess up (e.g. leave off a parenthesis), R might show a `+` sign prompting you to finish the command:
+
+```{r Coding 1, eval=FALSE}
+> (11-2
++
+```
+
+Finish the command or hit `Esc` to get out of this.
+
+---
+
+# R as a Calculator
+
+In the **console**, type `123 + 456 + 789` and hit `Enter`.
+--
+
+```{r Calc 1}
+123 + 456 + 789
+```
+
+--
+
+The `[1]` in the output indicates the numeric **index** of the first element on that line.
+
+--
+
+Now in your blank R document in the **editor**, try typing the line `sqrt(400)` and either
+clicking *Run* or hitting `Ctrl+Enter` or `⌘+Enter`.
+
+--
+
+```{r Calc 2}
+sqrt(400)
+```
+
+---
+
+# Functions and Help
+
+`sqrt()` is an example of a **function** in R.
+
+If we didn't have a good guess as to what `sqrt()` will do, we can type `?sqrt` in the console
+and look at the **Help** panel on the right.
+
+```{r Help, eval=FALSE}
+?sqrt
+```
+
+**Arguments** are the *inputs* to a function. In this case, the only argument to `sqrt()`
+is `x` which can be a number or a vector of numbers.
+
+Help files provide documentation on how to use functions and what functions produce.
+
+---
+
+# Creating Objects
+
+R stores *everything* as an **object**, including data, functions, models, and output.
+
+--
+
+Creating an object can be done using the **assignment operator**: `<-` 
+--
+
+```{r Objects 1}
+new.object <- 144
+```
+
+--
+
+**Operators** like `<-` are functions that look like symbols but typically sit between their arguments 
+(e.g. numbers or objects) instead of having them inside `()` like in `sqrt(x)`<sup>1</sup>. 
+
+.footnote[[1] We can actually call operators like other functions by stuffing them between backticks: <code>\`+\`(x,y)</code>]
+
+--
+
+We do math with operators, e.g., `x + y`. `+` is the addition operator!
+
+---
+
+# Calling Objects
+
+You can display or "call" an object simply by using its name.
+
+```{r Objects 2}
+new.object
+```
+
+--
+
+Object names can contain `_` and `.` in them, but cannot *begin* with numbers. Try
+to be consistent in naming objects. RStudio auto-complete means *long names are better 
+than vague ones*! 
+
+*Good names<sup>1</sup> save confusion later.*
+
+.footnote[[1] "There are only two hard things in Computer Science: cache invalidation and naming things." - Phil Karlton]
+
+---
+
+# Using Objects
+
+An object's **name** represents the information stored in that **object**, so you can treat the object's name
+as if it were the values stored inside.
+--
+
+```{r Objects 3}
+new.object + 10
+new.object + new.object
+sqrt(new.object)
+```
+
+---
+
+# Creating Vectors
+
+A **vector** is a series of **elements**, such as numbers. 
+
+--
+
+You can create a vector and store it as an object in the same way. To do this, use the
+function `c()` which stands for "combine" or "concatenate".
+--
+
+```{r Vectors 1}
+new.object <- c(4, 9, 16, 25, 36)
+new.object
+```
+
+--
+
+If you name an object the same name as an existing object, *it will overwrite it*.
+
+--
+
+You can provide a vector as an argument for many functions.
+--
+
+```{r Vectors 2}
+sqrt(new.object)
+```
+
+---
+
+# Character Vectors
+
+We often work with data that are categorical. To create a vector of text elements (**strings** in programming terms), we must place the text in quotes:
+
+```{r}
+string.vector <- c("Atlantic", "Pacific", "Arctic")
+string.vector
+```
+
+Categorical data can also be stored as a **factor**, which has an underlying numeric representation. Models will convert factors to dummies.<sup>1</sup>
+
+```{r}
+factor.vector <- factor(string.vector)
+factor.vector
+```
+
+.footnote[[1] Factors have **levels** which you can use to set a reference category in models using `relevel()`.]
+
+---
+# Saving and Loading Objects
+
+You can save an R object on your computer as a file to open later:
+```{r}
+save(new.object, file="new_object.RData")
+```
+
+--
+
+You can open saved files in R as well:
+```{r}
+load("new_object.RData")
+```
+
+--
+
+But where are these files being saved and loaded from?
+
+---
+
+# Working Directories
+
+R saves files and looks for files to open in your current **working directory**<sup>1</sup>. You
+can ask R what this is:
+
+.footnote[[1] For a simple R function to open an Explorer / Finder window at your working directory, [see this StackOverflow response](https://stackoverflow.com/a/12135823/10277284).]
+
+```{r}
+getwd()
+```
+
+--
+
+Similarly, we can set a working directory like so:
+
+```{r, eval=FALSE}
+setwd("C:/Users/cclan/Documents")
+```
+
+---
+
+# More Complex Objects
+
+The same principles shown with vectors can be used with more complex objects like **matrices**, **arrays**, **lists**, and **dataframes** (lists which look like matrices but can hold multiple data types at once).
+
+Most data sets you will work with will be read into R and stored as a **dataframe**, so the remainder of this workshop will mainly focus on manipulating these objects.
+
+---
+class: inverse 
+
+# Loading Dataframes
+
+---
+
+# Delimited Text Files
+
+The easiest way to work with external data---that isn't in R format---is for it to be stored in a *delimited* text file, e.g. comma-separated values (**.csv**) or tab-separated values (**.tsv**). 
+
+--
+
+R has a variety of built-in functions for importing data stored in text files, like `read.table()` and `read.csv()`. I recommend using the versions in the `readr` package instead: `read_csv()`, `read_tsv()`, and `read_delim()`:<sup>1</sup>
+
+`readr` function features:
+
+* Faster!
+* Better defaults (e.g. doesn't automatically convert character data to factors)
+* A *little* smarter about dates and times
+* Handy function `problems()` you can run if there are errors
+* Loading bars for large files
+
+.footnote[[1] Use "write" versions (e.g. `write_csv()`) to create these files from R objects.
+]
+
+---
+
+# Installing Packages
+
+The real power of R is found in add-on packages. Packages contain functions (and sometimes data) created by the community.
+
+To install the `readr` package, use the following:
+
+```{r, eval=FALSE}
+install.packages("readr")
+```
+
+This will download and install `readr` from the Central R Archive Network (CRAN).
+
+You only need to install a package **once** for any given version of R. You want to reinstall packages after upgrading R.
+
+To load a package, use `library()`:
+
+```{r}
+library(readr)
+```
+
+Once a package is loaded, you can call on functions inside it.
+
+---
+# `readr` Importing Example
+
+.small[
+```{r}
+spd_data <- read_csv("https://clanfear.github.io/CSSS508/Seattle_Police_Department_911_Incident_Response.csv")
+```
+]
+
+.pull-right30[
+.footnote[When loading a file, `readr` guesses at the format of each column by looking at the first 1000 rows. This output indicates the "guesses" made by `readr`. Always check to be sure they make sense!]
+]
+
+---
+# Data from Other Software
+
+Working with **Stata**, **SPSS**, or **SAS** users? You can use a package to bring in their saved data files:
+
+* `haven`
+    + Part of the `tidyverse` family
+    + Functions: `read_spss()`, `read_dta()`, `read_sas()`
+    + Keeps metadata like variable labels
+* `foreign`
+    + Part of base R
+    + Functions: `read.spss()`, `read.dta()`, `read.xport()`
+    + Less complex but loses some metadata
+
+For less common formats, Google it. I've yet to encounter a data format without an 
+R package to handle it (or at least a clever hack).
+
+If you encounter an ambiguous file extension (e.g. `.dat`), try opening it with
+a good text editor first (e.g. Atom, Sublime); there's a good chance it is actually raw text
+with a delimiter or fixed format that R can handle!
+
+---
+
+# Gapminder Data
+
+For the remainder of this workshop, we will work with data from the `gapminder` package.
+
+These data are a panel of 142 countries observed every 5 years from 1952 to 2007.
+
+```{r, eval=FALSE}
+install.packages("gapminder")
+library(gapminder)
+data(gapminder)
+head(gapminder)
+```
+
+```{r, echo=FALSE}
+library(gapminder)
+data(gapminder)
+head(gapminder)
+```
+
+---
+class: inverse
+# Indexing and Subsetting
+
+---
+
+# Indices and Dimensions
+
+In base R, there are two main ways to access elements of objects: square brackets (`[]` or `[[]]`) and `$`. How you access an object depends on its *dimensions*.
+
+--
+
+Dataframes have *2* dimensions: **rows** and **columns**. Square brackets allow us to numerically **subset** in the format of `object[row, column]`. Leaving the row or column place empty selects *all* elements of that dimension.
+
+.small[
+```{r}
+gapminder[1,] # First row
+```
+]
+--
+.small[
+```{r}
+gapminder[1:4, 3:4] # First four rows, third and fourth column #<<
+```
+]
+
+.pull-right[
+.footnote[
+The **colon operator** (`:`) generates a vector using the sequence of integers from its first argument to its second. `1:4` is equivalent to `c(1,2,3,4)`.
+]
+]
+---
+
+# Dataframes and Names
+
+Columns in dataframes can also be accessed using their names. This will return the column as a vector:
+
+```{r}
+gapminder$gdpPercap[1:10]
+```
+
+--
+
+Note here I *also* used brackets to select just the first 10 elements of that column.
+
+You can mix subsetting formats! In this case I provided only a single value (no column index) because **vectors** have *only one dimension*. 
+
+---
+
+# Indexing by Expression
+
+We can also index using expressions (logical *tests*).
+
+```{r}
+gapminder[gapminder$country=="Oman", ]
+```
+
+---
+
+# How Expressions Work
+
+What does `gapminder$country=="Oman"` actually do? 
+
+--
+
+```{r}
+head(gapminder$country=="Oman", 50)
+```
+
+--
+
+It returns a vector of `TRUE` or `FALSE` values. When used with the subset operator (`[]`), elements for which a `TRUE` is given are returned while those corresponding to `FALSE` are dropped.
+
+Note I displayed only the first 50 here... and there are no observations from Oman in the first 50 rows of the data!
+
+---
+
+# Sidenote: Missing Values
+
+Missing values are coded as `NA` entries without quotes:
+
+```{r}
+vector_w_missing <- c(1, 2, NA, 4, 5, 6, NA)
+```
+
+Even one `NA` "poisons the well": You'll get `NA` out of your calculations unless you remove them manually or with the extra argument `na.rm = TRUE` (in some functions):
+
+```{r}
+mean(vector_w_missing)
+mean(vector_w_missing, na.rm=TRUE)
+```
+
+---
+# Finding Missing Values
+
+**WARNING:** You can't test for missing values by seeing if they "equal" (`==`) `NA`:
+
+```{r}
+vector_w_missing == NA
+```
+
+But you can use the `is.na()` function:
+
+```{r}
+is.na(vector_w_missing)
+mean(vector_w_missing[!is.na(vector_w_missing)])
+```
+
+---
+
+# Logical Operators
+
+We used `==` for testing "equals": `gapminder$country == "Oman"`.
+
+--
+
+There are many other [logical operators](http://www.statmethods.net/management/operators.html):
+
+--
+
+* `!=`: not equal to
+--
+
+* `>`, `>=`, `<`, `<=`: less than, less than or equal to, etc.
+--
+
+* `%in%`: used with checking equal to one of several values
+
+--
+
+Or we can combine multiple logical conditions:
+
+* `&`: both conditions need to hold (AND)
+--
+
+* `|`: at least one condition needs to hold (OR)
+--
+
+* `!`: inverts a logical condition (`TRUE` becomes `FALSE`, `FALSE` becomes `TRUE`)
+
+--
+
+Logical operators are one of the foundations of programming. You should experiment with these to become familiar with how they work!
+
+---
+
+# Multiple Conditions Example
+
+Let's say we want observations from Oman after 1980 and through 2000.
+
+--
+
+```{r}
+gapminder[gapminder$country == "Oman" &
+          gapminder$year > 1980 &
+          gapminder$year <= 2000, ]
+```
+
+.footnote[
+Note we always need to use `gapminder$` to subset gapminder. This is because you can subset one object using a completely different object. This is actually very powerful!
+]
+
+---
+
+# Saving a Subset
+
+If we think a particular subset will be used repeatedly, we can save it and give it a name like any other object:
+
+```{r}
+China <- gapminder[gapminder$country == "China", ]
+head(China, 4)
+```
+
+---
+# Another Operator: `%in%`
+
+A common thing we may want to do is subset rows to things in some *set*.
+
+We can use `%in%` like `==` but for matching *any element* in the vector on its right<sup>1</sup>. 
+
+```{r}
+former_yugoslavia <- c("Bosnia and Herzegovina", "Croatia", 
+              "Macedonia", "Montenegro", "Serbia", "Slovenia")
+yugoslavia <- gapminder[gapminder$country %in% former_yugoslavia, ]
+tail(yugoslavia, 2)
+```
+
+.footnote[[1] Remember the `c()` function is how we make **vectors** in R.]
+
+---
+## Create New Columns
+
+We can create new columns (variables) in a dataframe using the same subsetting functions.
+
+
+
+```{r}
+yugoslavia$pop_million <- yugoslavia$pop / 1000000
+yugoslavia$life_exp_past_40 <- yugoslavia$lifeExp - 40
+head(yugoslavia)
+```
+
+---
+# `ifelse()`
+
+
+A common function used in general in R programming is `ifelse()`. This returns a value depending on logical tests.
+
+```{r, eval=FALSE}
+ifelse(test = x==y, yes = 1, no = 2)
+```
+
+Output from `ifelse()`:
+* `ifelse()` returns the value assigned to `yes` (in this case, `1`) if `x==y` is `TRUE`.
+
+* `ifelse()` returns `no` (in this case, `2`) if `x==y` is `FALSE`.
+
+* `ifelse()` returns `NA` if `x==y` is neither `TRUE` nor `FALSE`.
+
+Note we can omit explicitly typing function arguments like `test = ` if we enter them in the order of arguments shown in the function's help page.
+
+---
+# `ifelse()` Example
+
+
+```{r}
+yugoslavia$short_country <-  ifelse(yugoslavia$country == "Bosnia and Herzegovina",
+                                    "B and H", as.character(yugoslavia$country))
+yugoslavia[yugoslavia$year==1952, c(1,9)]
+```
+
+Read this as "For each row, if country equals 'Bosnia and Herzegovina, make `short_country` equal to 'B and H', otherwise make it equal to that row's value of `country`."
+
+This is a simple way to change some values but not others!
+
+---
+class: inverse
+
+# Analyses
+## Basic Graphics and Models
+
+---
+# Histograms
+
+We can use the `hist()` function to generate a histogram of a vector:
+
+```{r, out.height="400px"}
+hist(gapminder$lifeExp,
+     xlab = "Life Expectancy (years)", #<<
+     main = "Observed Life Expectancies of Countries") #<<
+```
+
+.pull-right[
+.footnote[
+`xlab =` is used to set the label of the x-axis of a plot.
+
+`main = ` is used to set the title of a plot.
+
+Use `?hist` to see additional options available for customizing a histogram.
+]
+]
+---
+# Scatter Plots
+
+
+.small[
+```{r, out.height="400px"}
+plot(lifeExp ~ gdpPercap, data = gapminder, #<<
+     xlab = "ln(GDP per Capita)",
+     ylab = "Life Expectancy (years)",
+     main = "Life Expectancy and log GDP per Capita",
+     pch = 16, log="x") # Point size
+abline(h = mean(gapminder$lifeExp), col = "firebrick") #<<
+abline(v = mean(gapminder$gdpPercap), col = "cornflowerblue")
+```
+]
+
+.pull-right[
+.footnote[Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis. Regression formulae follow this convention as well!
+
+The `abline()` calls place horizontal (`h =`) or vertical (`v =`) lines at the means of the variables used in the plot. 
+]
+]
+
+---
+
+# Linear Models
+
+We can run an ordinary least squares linear regression using the `lm()` function:
+
+```{r}
+lm(lifeExp~pop + gdpPercap + year + continent, data=gapminder)
+```
+
+Note we get a lot less output here than you may have expected! This is because we're only viewing a tiny bit of the information produced by `lm()`. We need to expore the object `lm()` creates!
+
+---
+
+# Model Summaries
+
+The `summary()` function provides a Stata-like regression output:
+
+.small[
+```{r}
+lm_out <- lm(lifeExp~pop + gdpPercap + year + continent, data=gapminder)
+summary(lm_out)
+```
+]
+
+---
+
+# Model Objects
+
+`lm()` produces a lot more information than what is shown by `summary()` however. We can see the **str**ucture of `lm()` output using `str()`:
+
+.small[
+```{r}
+str(lm_out)
+```
+]
+
+.pull-right30[
+.footnote[
+`lm()` actually has an enormous quantity of output! This is a type of object called a **list**.
+]
+]
+---
+
+# Model Objects
+
+We can access parts of `lm()` output using `$` like with dataframe names:
+
+.small[
+```{r}
+lm_out$coefficients
+```
+]
+
+We can also do this with `summary()`:
+
+.small[
+```{r}
+summary(lm_out)$coefficients #<<
+```
+]
+
+.footnote[
+Note that `summary()` calculates and provides standard errors and test statistics.
+]
+---
+
+# More Complex Models
+
+R supports many more complex models, for example:
+
+* `glm()` has syntax similar to `lm()` but adds a `family =` argument to specify model families and link functions like logistic regression (`glm(x~y, family = binomial(link="logit"))`)
+* The `lme4` package adds hierarchical (multilevel) linear models.
+* `lavaan` adds structural equation models.
+
+Most of these other packages support mode summaries with `summary()` and all create output objects which can be accessed using `$`.
+
+---
+# Resources
+
+* [CSSS508: Introduction to R for Social Sciences](https://clanfear.github.io/CSSS508/)
+
+* [Installing R and RStudio](https://clanfear.github.io/CSSS508/docs/installation.html)
+
+* [DataCamp's Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r)
+
+* [R for Data Science](http://r4ds.had.co.nz/)

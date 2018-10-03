@@ -1,0 +1,15 @@
+Things to cover
+ Lecture 1
+  data()
+  View()
+  str()
+  hist()
+  plot()
+  summary()
+  head()
+ Lecture 2
+  filter()
+
+ Not in Lecture
+  lm()
+  glm()
