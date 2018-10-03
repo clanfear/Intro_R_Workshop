@@ -13,22 +13,24 @@ layout: default
 
 ## General R Resources:
 
-   * [R for Data Science online](http://r4ds.had.co.nz/) textbook by Garrett Grolemund and Hadley Wickham. One of many good R texts available, but importantly it is free and focuses on the [`tidyverse`](http://tidyverse.org/) collection of R packages which form the backbone of this course.
+   * [UW CSSS508](https://clanfear.github.io/CSSS508/): My University of Washington Introduction to R course. All content including lecture videos available publicly.
+   * [R for Data Science](http://r4ds.had.co.nz/) online textbook by Garrett Grolemund and Hadley Wickham. One of many good R texts available, but importantly it is free and focuses on the [`tidyverse`](http://tidyverse.org/) collection of R packages which are the modern standard for data manipulation and visualization in R.
    * [Advanced R](http://adv-r.had.co.nz/) online textbook by Hadley Wickham. A great source for more in-depth and advanced R programming.
    * [DataCamp](https://www.datacamp.com/): A source for interactive R tutorials (some free of charge).
    * [`swirl`](http://swirlstats.com/students.html): Interactive tutorials inside R.
    * [Useful RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) on R Markdown, RStudio shortcuts, etc.
-   * [UW CSSS508]: My University of Washington Introduction to R course. All content including lecture videos available publicly.
    * [Code style guide](http://adv-r.had.co.nz/Style.html) for writing functions, etc.
    * [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510)   
 
 ## Plotting
 
-   * [Shapes and line types](http://www.cookbook-r.com/Graphs/Shapes_and_line_types/) in base R
-   * [Color names (PDF)](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) in base R
+   * Base R graphics
+      + [Shapes and line types](http://www.cookbook-r.com/Graphs/Shapes_and_line_types/) in base R
+      + [Color names (PDF)](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) in base R
+   * `ggplot2`
+      + [`ggplot2` documentation](http://docs.ggplot2.org/current/)
+      + [`ggplot2` Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
    * [Visualization chapter in R for Data Science](http://r4ds.had.co.nz/data-visualisation.html)
-   * [`ggplot2` documentation](http://docs.ggplot2.org/current/)
-   * [`ggplot2` Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
    * [Cookbook for R graph reference](http://www.cookbook-r.com/Graphs/)
    * [R graph catalog at UBC](http://shiny.stat.ubc.ca/r-graph-catalog/)
 
