@@ -13,7 +13,7 @@ layout: default
 
 ## General R Resources:
 
-   * [UW CSSS508](https://clanfear.github.io/CSSS508/): My University of Washington Introduction to R course. All content including lecture videos available publicly.
+   * [UW CSSS508](https://clanfear.github.io/CSSS508/): My University of Washington Introduction to R course which forms the basis for this workshop. All content including lecture videos are freely available.
    * [R for Data Science](http://r4ds.had.co.nz/) online textbook by Garrett Grolemund and Hadley Wickham. One of many good R texts available, but importantly it is free and focuses on the [`tidyverse`](http://tidyverse.org/) collection of R packages which are the modern standard for data manipulation and visualization in R.
    * [Advanced R](http://adv-r.had.co.nz/) online textbook by Hadley Wickham. A great source for more in-depth and advanced R programming.
    * [DataCamp](https://www.datacamp.com/): A source for interactive R tutorials (some free of charge).
