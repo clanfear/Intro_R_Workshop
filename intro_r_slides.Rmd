@@ -753,7 +753,7 @@ class: inverse
 
 We can use the `hist()` function to generate a histogram of a vector:
 
-```{r, out.height="400px"}
+```{r, out.height="320px"}
 hist(gapminder$lifeExp,
      xlab = "Life Expectancy (years)", #<<
      main = "Observed Life Expectancies of Countries") #<<
@@ -773,7 +773,7 @@ Use `?hist` to see additional options available for customizing a histogram.
 
 
 .small[
-```{r, out.height="400px"}
+```{r, out.height="320px"}
 plot(lifeExp ~ gdpPercap, data = gapminder, #<<
      xlab = "ln(GDP per Capita)",
      ylab = "Life Expectancy (years)",
@@ -845,16 +845,13 @@ lm_out$coefficients
 ```
 ]
 
-We can also do this with `summary()`:
+We can also do this with `summary()`, which provides additional statistics:
 
 .small[
 ```{r}
-summary(lm_out)$coefficients #<<
+summary(lm_out)$coefficients
 ```
 ]
-
-
-Note that `summary()` calculates and provides standard errors and test statistics.
 
 ---
 
@@ -878,11 +875,10 @@ Because R is the dominant environment for statisticians, the universe of modelin
 ---
 # Resources
 
-   * [UW CSSS508](https://clanfear.github.io/CSSS508/): My University of Washington Introduction to R course which forms the basis for this workshop. All content including lecture videos are freely available.
+   * [UW CSSS508](https://clanfear.github.io/CSSS508/): My University of Washington Introduction to R course which forms the basis for this workshop. All content including lecture videos is freely available.
    * [R for Data Science](http://r4ds.had.co.nz/) online textbook by Garrett Grolemund and Hadley Wickham. One of many good R texts available, but importantly it is free and focuses on the [`tidyverse`](http://tidyverse.org/) collection of R packages which are the modern standard for data manipulation and visualization in R.
    * [Advanced R](http://adv-r.had.co.nz/) online textbook by Hadley Wickham. A great source for more in-depth and advanced R programming.
    * [DataCamp](https://www.datacamp.com/): A source for interactive R tutorials (some free of charge).
    * [`swirl`](http://swirlstats.com/students.html): Interactive tutorials inside R.
    * [Useful RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) on R Markdown, RStudio shortcuts, etc.
-   * [Code style guide](http://adv-r.had.co.nz/Style.html) for writing functions, etc.
-   * [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) 
+   * [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - From abstract: "This paper presents a set of good computing practices that every researcher can adopt, regardless of their current level of computational skill."
