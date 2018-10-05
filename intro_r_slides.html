@@ -13,7 +13,7 @@ class: center, top, title-slide
 # Introduction to R
 ## UW Tacoma
 ### Charles Lanfear
-### Oct 11, 2018<br>Updated: Oct 3, 2018
+### Oct 11, 2018<br>Updated: Oct 5, 2018
 
 ---
 
@@ -338,6 +338,8 @@ string.vector
 ## [1] "Atlantic" "Pacific"  "Arctic"
 ```
 
+--
+
 Categorical data can also be stored as a **factor**, which has an underlying numeric representation. Models will convert factors to dummies.&lt;sup&gt;1&lt;/sup&gt;
 
 
@@ -422,100 +424,37 @@ The easiest way to work with external data—that isn't in R format—is for it 
 
 --
 
-R has a variety of built-in functions for importing data stored in text files, like `read.table()` and `read.csv()`. I recommend using the versions in the `readr` package instead: `read_csv()`, `read_tsv()`, and `read_delim()`:&lt;sup&gt;1&lt;/sup&gt;
+R has a variety of built-in functions for importing data stored in text files, like `read.table()` and `read.csv()`.&lt;sup&gt;1&lt;/sup&gt;
 
-`readr` function features:
-
-* Faster!
-* Better defaults (e.g. doesn't automatically convert character data to factors)
-* A *little* smarter about dates and times
-* Handy function `problems()` you can run if there are errors
-* Loading bars for large files
-
-.footnote[[1] Use "write" versions (e.g. `write_csv()`) to create these files from R objects.
+.footnote[
+[1] Use "write" versions (e.g. `write.csv()`) to create these files from R objects.
 ]
 
----
+--
 
-# Installing Packages
+By default, these functions will read *character* (string) columns in as a *factor*.
 
-The real power of R is found in add-on packages. Packages contain functions (and sometimes data) created by the community.
-
-To install the `readr` package, use the following:
+To disable this, use the argument `stringsAsFactors = FALSE`, like so:
 
 
 ```r
-install.packages("readr")
+new_df &lt;- read.csv("some_spreadsheet.csv", stringsAsFactors = FALSE)
 ```
-
-This will download and install `readr` from the Comprehensive R Archive Network (CRAN).
-
-You only need to install a package **once** for any given version of R. You want to reinstall packages after upgrading R.
-
-To load a package, use `library()`:
-
-
-```r
-library(readr)
-```
-
-Once a package is loaded, you can call on functions inside it.
-
----
-# `readr` Importing Example
-
-.small[
-
-```r
-spd_data &lt;- read_csv("https://clanfear.github.io/CSSS508/Seattle_Police_Department_911_Incident_Response.csv")
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   `CAD CDW ID` = col_integer(),
-##   `CAD Event Number` = col_double(),
-##   `General Offense Number` = col_integer(),
-##   `Event Clearance Code` = col_character(),
-##   `Event Clearance Description` = col_character(),
-##   `Event Clearance SubGroup` = col_character(),
-##   `Event Clearance Group` = col_character(),
-##   `Event Clearance Date` = col_character(),
-##   `Hundred Block Location` = col_character(),
-##   `District/Sector` = col_character(),
-##   `Zone/Beat` = col_character(),
-##   `Census Tract` = col_double(),
-##   Longitude = col_double(),
-##   Latitude = col_double(),
-##   `Incident Location` = col_character(),
-##   `Initial Type Description` = col_character(),
-##   `Initial Type Subgroup` = col_character(),
-##   `Initial Type Group` = col_character(),
-##   `At Scene Time` = col_character()
-## )
-```
-]
-
-.pull-right30[
-.footnote[When loading a file, `readr` guesses at the format of each column by looking at the first 1000 rows. This output indicates the "guesses" made by `readr`. Always check to be sure they make sense!
-
-Also note here that I loaded data directly from an online source.
-]
-]
 
 ---
 # Data from Other Software
 
-Working with **Stata**, **SPSS**, or **SAS** users? You can use a package to bring in their saved data files:
-
+Working with **Stata**, **SPSS**, or **SAS** users? You can use a **package** to bring in their saved data files:
+ 
+* `foreign`
+    + Part of base R
+    + Functions: `read.spss()`, `read.dta()`, `read.xport()`
+    + Less complex but sometimes loses some metadata
 * `haven`
     + Part of the `tidyverse` family
     + Functions: `read_spss()`, `read_dta()`, `read_sas()`
     + Keeps metadata like variable labels
-* `foreign`
-    + Part of base R
-    + Functions: `read.spss()`, `read.dta()`, `read.xport()`
-    + Less complex but loses some metadata
+
 
 For less common formats, Google it. I've yet to encounter a data format without an 
 R package to handle it (or at least a clever hack).
@@ -526,20 +465,49 @@ with a delimiter or fixed format that R can handle!
 
 ---
 
-# Gapminder Data
+# Installing Packages
+
+But what are packages? 
+
+--
+
+Packages contain functions (and sometimes data) created by the community. The real power of R is found in add-on packages!
+
+--
 
 For the remainder of this workshop, we will work with data from the `gapminder` package.
 
-These data are a panel of 142 countries observed every 5 years from 1952 to 2007.
+These data are a panel data describing 142 countries observed every 5 years from 1952 to 2007.
+
+--
+
+We can install `gapminder` from the Comprehensive R Archive Network (CRAN):
 
 
 ```r
 install.packages("gapminder")
-library(gapminder)
-data(gapminder)
-*head(gapminder) # head() shows first 6 elements of an object
 ```
 
+You only need to install a package **once** for any given version of R. You need to reinstall packages after upgrading R.
+
+---
+
+# Loading Packages
+
+To load a package, use `library()`:
+
+
+```r
+library(gapminder)
+```
+
+Once a package is loaded, you can call on functions or data inside it.
+
+
+```r
+data(gapminder) # Places data in your global environment
+head(gapminder) # Displays first six elements of an object
+```
 
 ```
 ## # A tibble: 6 x 6
@@ -623,7 +591,9 @@ gapminder$gdpPercap[1:10]
 
 Note here I *also* used brackets to select just the first 10 elements of that column.
 
-You can mix subsetting formats! In this case I provided only a single value (no column index) because **vectors** have *only one dimension*. 
+You can mix subsetting formats! In this case I provided only a single value (no column index) because **vectors** have *only one dimension* (length).
+
+If you try to subset something and get a warning about "incorrect number of dimensions", check your subsetting!
 
 ---
 
@@ -664,7 +634,7 @@ What does `gapminder$country=="Oman"` actually do?
 
 
 ```r
-head(gapminder$country=="Oman", 50)
+head(gapminder$country=="Oman", 50) # display first 50 elements
 ```
 
 ```
@@ -729,7 +699,7 @@ Missing values are coded as `NA` entries without quotes:
 vector_w_missing &lt;- c(1, 2, NA, 4, 5, 6, NA)
 ```
 
-Even one `NA` "poisons the well": You'll get `NA` out of your calculations unless you remove them manually or with the extra argument `na.rm = TRUE` (in some functions):
+Even one `NA` "poisons the well": You'll get `NA` out of your calculations unless you remove them manually or use the extra argument `na.rm = TRUE` in some functions:
 
 
 ```r
@@ -816,7 +786,7 @@ gapminder[gapminder$country == "Oman" &amp;
 ```
 
 .footnote[
-Note we always need to use `gapminder$` to subset gapminder (rather than just `country == "Oman"` alone. This is because you can subset one object using a completely different object. This is actually very powerful!
+Note we always need to use the full object name in each subseting argument, rather than just `country == "Oman"` alone. You can subset one object using another this way (e.g. `gapminder[other_data$some_variable == x, ]`).
 ]
 
 ---
@@ -846,25 +816,27 @@ head(China, 4)
 
 A common thing we may want to do is subset rows to things in some *set*.
 
-We can use `%in%` like `==` but for matching *any element* in the vector on its right&lt;sup&gt;1&lt;/sup&gt;. 
+We can use `%in%` like `==` but it matches *any element* in the vector on its right. 
 
 
 ```r
 former_yugoslavia &lt;- c("Bosnia and Herzegovina", "Croatia", 
               "Macedonia", "Montenegro", "Serbia", "Slovenia")
 yugoslavia &lt;- gapminder[gapminder$country %in% former_yugoslavia, ]
-tail(yugoslavia, 2)
+head(yugoslavia)
 ```
 
 ```
-## # A tibble: 2 x 6
-##   country  continent  year lifeExp     pop gdpPercap
-##   &lt;fct&gt;    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
-## 1 Slovenia Europe     2002    76.7 2011497    20660.
-## 2 Slovenia Europe     2007    77.9 2009245    25768.
+## # A tibble: 6 x 6
+##   country                continent  year lifeExp     pop gdpPercap
+##   &lt;fct&gt;                  &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+## 1 Bosnia and Herzegovina Europe     1952    53.8 2791000      974.
+## 2 Bosnia and Herzegovina Europe     1957    58.4 3076000     1354.
+## 3 Bosnia and Herzegovina Europe     1962    61.9 3349000     1710.
+## 4 Bosnia and Herzegovina Europe     1967    64.8 3585000     2172.
+## 5 Bosnia and Herzegovina Europe     1972    67.4 3819000     2860.
+## 6 Bosnia and Herzegovina Europe     1977    69.9 4086000     3528.
 ```
-
-.footnote[[1] Remember the `c()` function is how we make **vectors** in R.]
 
 ---
 ## Create New Columns
@@ -926,7 +898,7 @@ Note we can omit explicitly typing function arguments like `test = ` if we enter
 yugoslavia$short_country &lt;-  ifelse(yugoslavia$country == "Bosnia and Herzegovina",
                                     "B and H",
                                     as.character(yugoslavia$country))
-yugoslavia[yugoslavia$year==1952, c(1,9)]
+yugoslavia[yugoslavia$year==1952, c(1,9)] # Selecting just columns 1 and 9
 ```
 
 ```
@@ -941,12 +913,12 @@ yugoslavia[yugoslavia$year==1952, c(1,9)]
 ```
 ]
 
-Read this as "For each row, if country equals 'Bosnia and Herzegovina, make `short_country` equal to 'B and H', otherwise make it equal to that row's value of `country`."
+Read this as "For each row, if `country` equals `"Bosnia and Herzegovina"`, make `short_country` equal to `"B and H"`, otherwise make it equal to that row's original value of `country` (as character, rather than factor, data)."
 
 This is a simple way to change some values but not others!
 
 .footnote[
-Note that you can split arguments to a function into multiple lines for clarity, so long as lines end with an operator (like `,` or `+`).
+Note that you can split arguments to a function into multiple lines for clarity, so long as lines end with an operator (like `+`) or comma (used to separate arguments).
 ]
 
 ---
@@ -967,7 +939,7 @@ hist(gapminder$lifeExp,
 *    main = "Observed Life Expectancies of Countries")
 ```
 
-&lt;img src="intro_r_slides_files/figure-html/unnamed-chunk-28-1.png" height="400px" /&gt;
+&lt;img src="intro_r_slides_files/figure-html/unnamed-chunk-27-1.png" height="400px" /&gt;
 
 .pull-right[
 .footnote[
@@ -989,12 +961,12 @@ Use `?hist` to see additional options available for customizing a histogram.
      xlab = "ln(GDP per Capita)",
      ylab = "Life Expectancy (years)",
      main = "Life Expectancy and log GDP per Capita",
-     pch = 16, log="x") # Point size
+     pch = 16, log="x") # log="x" sets x axis to log scale!
 *abline(h = mean(gapminder$lifeExp), col = "firebrick")
-abline(v = mean(gapminder$gdpPercap), col = "cornflowerblue")
+*abline(v = mean(gapminder$gdpPercap), col = "cornflowerblue")
 ```
 
-&lt;img src="intro_r_slides_files/figure-html/unnamed-chunk-29-1.png" height="400px" /&gt;
+&lt;img src="intro_r_slides_files/figure-html/unnamed-chunk-28-1.png" height="400px" /&gt;
 ]
 
 .pull-right[
