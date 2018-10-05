@@ -34,8 +34,8 @@ h1, h2, h3 {
 .remark-slide-content {
   background-color: #FFFFFF;
   font-size: 20px;
-  
-  
+  background-image: url(https://clanfear.github.io/Intro_R_Workshop/img/UWTacomaBG1.svg);
+  background-size: cover;
   
   padding: 1em 4em 1em 4em;
 }
@@ -225,4 +225,7 @@ a {
 }
 body {
   line-height: 1.4;
+}
+.inverse {
+  background-image: url(https://clanfear.github.io/Intro_R_Workshop/img/UWTacomaBG1_white.svg);
 }
