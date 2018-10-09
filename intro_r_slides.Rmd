@@ -36,6 +36,7 @@ csss508css <- list(
         "border-radius" = "3px",
         "padding" = "2px"),
      ".small" = list("font-size" = "75%"),
+     ".smaller" = list("font-size" = "60%"),
      ".remark-code-line-highlighted" = list(
         "background-color" = "rgba(255,0,255,0.2)"),
      "sup" = list("font-size" = "14px"),
@@ -95,21 +96,28 @@ class: inverse
 R is a programming language built for statistical computing.
 
 If one already knows Stata or similar software, why use R?
+
 --
 
 * R is *free*, so you don't need a terminal server or license.
+
 --
 
 * R has a *very* large community for support and packages.
+
 --
 
 * R can handle virtually any data format.
+
 --
 
 * R makes replication *easy*.
+
 --
 
-* R is a *language* so it can do *everything*.
+* R is a *language* so it can do *everything*.<sup>1</sup>
+
+.footnote[[1] Including generate these slides (using RMarkdown)!]
 --
 
 * R is similar to other programming languages.
@@ -126,15 +134,18 @@ RStudio can:
 --
 
 * Organize your code, output, and plots.
+
 --
 
 * Auto-complete code and highlight syntax.
+
 --
 
 * Help view data and objects.
+
 --
 
-* Enable easy integration of R code into documents.
+* [Enable easy integration of R code into documents.](https://rmarkdown.rstudio.com/)
 
 ---
 # Getting Started
@@ -541,33 +552,32 @@ If you try to subset something and get a warning about "incorrect number of dime
 We can also index using expressions—logical *tests*.
 
 ```{r}
-gapminder[gapminder$country=="Oman", ]
+gapminder[gapminder$year==1952, ]
 ```
 
 ---
 
 # How Expressions Work
 
-What does `gapminder$country=="Oman"` actually do? 
+What does `gapminder$year==1952` actually do? 
 
 --
 
 ```{r}
-head(gapminder$country=="Oman", 50) # display first 50 elements
+head(gapminder$year==1952, 50) # display first 50 elements
 ```
 
 --
 
-It returns a vector of `TRUE` or `FALSE` values. When used with the subset operator (`[]`), elements for which a `TRUE` is given are returned while those corresponding to `FALSE` are dropped.
+It returns a vector of `TRUE` or `FALSE` values.
 
-Note I displayed only the first 50 here... and there are no observations from Oman in the first 50 rows of the data!
-
+When used with the subset operator (`[]`), elements for which a `TRUE` is given are returned while those corresponding to `FALSE` are dropped.
 
 ---
 
 # Logical Operators
 
-We used `==` for testing "equals": `gapminder$country == "Oman"`.
+We used `==` for testing "equals": `gapminder$year==1952`.
 
 --
 
@@ -785,11 +795,26 @@ abline(v = mean(gapminder$gdpPercap), col = "cornflowerblue") #<<
 ]
 
 .pull-right[
-.footnote[Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis. Regression formulae follow this convention as well!
+.footnote[Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis.
 
 The `abline()` calls place horizontal (`h =`) or vertical (`v =`) lines at the means of the variables used in the plot. 
 ]
 ]
+
+---
+# Formulae
+
+Most modeling functions in R use a common formula format—the same seen with the previous plot:
+
+```{r}
+new_formula <- y ~ x1 + x2 + x3
+new_formula
+class(new_formula)
+```
+
+The dependent variable goes on the left side of `~` and independent variables go on the right.
+
+See here for more on [formulae](https://www.datacamp.com/community/tutorials/r-formula-tutorial).
 
 ---
 
@@ -807,9 +832,9 @@ Note we get a lot less output here than you may have expected! This is because w
 
 # Model Summaries
 
-The `summary()` function provides a Stata-like regression output:
+The `summary()` function provides Stata-like regression output:
 
-.small[
+.smaller[
 ```{r}
 lm_out <- lm(lifeExp~pop + gdpPercap + year + continent, data=gapminder)
 summary(lm_out)
@@ -822,9 +847,13 @@ summary(lm_out)
 
 `lm()` produces a lot more information than what is shown by `summary()` however. We can see the **str**ucture of `lm()` output using `str()`:
 
-.small[
-```{r}
+```{r, eval=FALSE}
 str(lm_out)
+```
+
+.smaller[
+```{r, echo=FALSE}
+str(lm_out, list.len=7, max.level=2) # list.len is used to 
 ```
 ]
 
@@ -862,9 +891,9 @@ R supports many more complex models, for example:
 * `glm()` has syntax similar to `lm()` but adds a `family =` argument to specify model families and link functions like logistic regression
    + ex: `glm(x~y, family=binomial(link="logit"))`
 
-* The `lme4` package adds hierarchical (multilevel) linear models.
+* The `lme4` package adds hierarchical (multilevel) GLM models.
 
-* `lavaan` adds structural equation models.
+* `lavaan` fits structural equation models with intuitive syntax.
 
 * `plm` and `tseries` fit time series models.
 

@@ -13,7 +13,7 @@ class: center, top, title-slide
 # Introduction to R
 ## UW Tacoma
 ### Charles Lanfear
-### Oct 11, 2018<br>Updated: Oct 5, 2018
+### Oct 11, 2018<br>Updated: Oct 9, 2018
 
 ---
 
@@ -49,21 +49,28 @@ class: inverse
 R is a programming language built for statistical computing.
 
 If one already knows Stata or similar software, why use R?
+
 --
 
 * R is *free*, so you don't need a terminal server or license.
+
 --
 
 * R has a *very* large community for support and packages.
+
 --
 
 * R can handle virtually any data format.
+
 --
 
 * R makes replication *easy*.
+
 --
 
-* R is a *language* so it can do *everything*.
+* R is a *language* so it can do *everything*.&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[[1] Including generate these slides (using RMarkdown)!]
 --
 
 * R is similar to other programming languages.
@@ -80,15 +87,18 @@ RStudio can:
 --
 
 * Organize your code, output, and plots.
+
 --
 
 * Auto-complete code and highlight syntax.
+
 --
 
 * Help view data and objects.
+
 --
 
-* Enable easy integration of R code into documents.
+* [Enable easy integration of R code into documents.](https://rmarkdown.rstudio.com/)
 
 ---
 # Getting Started
@@ -603,60 +613,58 @@ We can also index using expressions—logical *tests*.
 
 
 ```r
-gapminder[gapminder$country=="Oman", ]
+gapminder[gapminder$year==1952, ]
 ```
 
 ```
-## # A tibble: 12 x 6
-##    country continent  year lifeExp     pop gdpPercap
-##    &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
-##  1 Oman    Asia       1952    37.6  507833     1828.
-##  2 Oman    Asia       1957    40.1  561977     2243.
-##  3 Oman    Asia       1962    43.2  628164     2925.
-##  4 Oman    Asia       1967    47.0  714775     4721.
-##  5 Oman    Asia       1972    52.1  829050    10618.
-##  6 Oman    Asia       1977    57.4 1004533    11848.
-##  7 Oman    Asia       1982    62.7 1301048    12955.
-##  8 Oman    Asia       1987    67.7 1593882    18115.
-##  9 Oman    Asia       1992    71.2 1915208    18617.
-## 10 Oman    Asia       1997    72.5 2283635    19702.
-## 11 Oman    Asia       2002    74.2 2713462    19775.
-## 12 Oman    Asia       2007    75.6 3204897    22316.
+## # A tibble: 142 x 6
+##    country     continent  year lifeExp      pop gdpPercap
+##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+##  1 Afghanistan Asia       1952    28.8  8425333      779.
+##  2 Albania     Europe     1952    55.2  1282697     1601.
+##  3 Algeria     Africa     1952    43.1  9279525     2449.
+##  4 Angola      Africa     1952    30.0  4232095     3521.
+##  5 Argentina   Americas   1952    62.5 17876956     5911.
+##  6 Australia   Oceania    1952    69.1  8691212    10040.
+##  7 Austria     Europe     1952    66.8  6927772     6137.
+##  8 Bahrain     Asia       1952    50.9   120447     9867.
+##  9 Bangladesh  Asia       1952    37.5 46886859      684.
+## 10 Belgium     Europe     1952    68    8730405     8343.
+## # ... with 132 more rows
 ```
 
 ---
 
 # How Expressions Work
 
-What does `gapminder$country=="Oman"` actually do? 
+What does `gapminder$year==1952` actually do? 
 
 --
 
 
 ```r
-head(gapminder$country=="Oman", 50) # display first 50 elements
+head(gapminder$year==1952, 50) # display first 50 elements
 ```
 
 ```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [45] FALSE FALSE FALSE FALSE FALSE FALSE
+##  [1]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [12] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [23] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [34] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [45] FALSE FALSE FALSE FALSE  TRUE FALSE
 ```
 
 --
 
-It returns a vector of `TRUE` or `FALSE` values. When used with the subset operator (`[]`), elements for which a `TRUE` is given are returned while those corresponding to `FALSE` are dropped.
+It returns a vector of `TRUE` or `FALSE` values.
 
-Note I displayed only the first 50 here... and there are no observations from Oman in the first 50 rows of the data!
-
+When used with the subset operator (`[]`), elements for which a `TRUE` is given are returned while those corresponding to `FALSE` are dropped.
 
 ---
 
 # Logical Operators
 
-We used `==` for testing "equals": `gapminder$country == "Oman"`.
+We used `==` for testing "equals": `gapminder$year==1952`.
 
 --
 
@@ -970,11 +978,38 @@ Use `?hist` to see additional options available for customizing a histogram.
 ]
 
 .pull-right[
-.footnote[Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis. Regression formulae follow this convention as well!
+.footnote[Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis.
 
 The `abline()` calls place horizontal (`h =`) or vertical (`v =`) lines at the means of the variables used in the plot. 
 ]
 ]
+
+---
+# Formulae
+
+Most modeling functions in R use a common formula format—the same seen with the previous plot:
+
+
+```r
+new_formula &lt;- y ~ x1 + x2 + x3
+new_formula
+```
+
+```
+## y ~ x1 + x2 + x3
+```
+
+```r
+class(new_formula)
+```
+
+```
+## [1] "formula"
+```
+
+The dependent variable goes on the left side of `~` and independent variables go on the right.
+
+See here for more on [formulae](https://www.datacamp.com/community/tutorials/r-formula-tutorial).
 
 ---
 
@@ -1007,9 +1042,9 @@ Note we get a lot less output here than you may have expected! This is because w
 
 # Model Summaries
 
-The `summary()` function provides a Stata-like regression output:
+The `summary()` function provides Stata-like regression output:
 
-.small[
+.smaller[
 
 ```r
 lm_out &lt;- lm(lifeExp~pop + gdpPercap + year + continent, data=gapminder)
@@ -1050,11 +1085,12 @@ summary(lm_out)
 
 `lm()` produces a lot more information than what is shown by `summary()` however. We can see the **str**ucture of `lm()` output using `str()`:
 
-.small[
 
 ```r
 str(lm_out)
 ```
+
+.smaller[
 
 ```
 ## List of 13
@@ -1071,56 +1107,14 @@ str(lm_out)
 ##  $ qr           :List of 5
 ##   ..$ qr   : num [1:1704, 1:8] -41.2795 0.0242 0.0242 0.0242 0.0242 ...
 ##   .. ..- attr(*, "dimnames")=List of 2
-##   .. .. ..$ : chr [1:1704] "1" "2" "3" "4" ...
-##   .. .. ..$ : chr [1:8] "(Intercept)" "pop" "gdpPercap" "year" ...
 ##   .. ..- attr(*, "assign")= int [1:8] 0 1 2 3 4 4 4 4
 ##   .. ..- attr(*, "contrasts")=List of 1
-##   .. .. ..$ continent: chr "contr.treatment"
 ##   ..$ qraux: num [1:8] 1.02 1 1.02 1.01 1.01 ...
 ##   ..$ pivot: int [1:8] 1 2 3 4 5 6 7 8
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 8
 ##   ..- attr(*, "class")= chr "qr"
-##  $ df.residual  : int 1696
-##  $ contrasts    :List of 1
-##   ..$ continent: chr "contr.treatment"
-##  $ xlevels      :List of 1
-##   ..$ continent: chr [1:5] "Africa" "Americas" "Asia" "Europe" ...
-##  $ call         : language lm(formula = lifeExp ~ pop + gdpPercap + year + continent, data = gapminder)
-##  $ terms        :Classes 'terms', 'formula'  language lifeExp ~ pop + gdpPercap + year + continent
-##   .. ..- attr(*, "variables")= language list(lifeExp, pop, gdpPercap, year, continent)
-##   .. ..- attr(*, "factors")= int [1:5, 1:4] 0 1 0 0 0 0 0 1 0 0 ...
-##   .. .. ..- attr(*, "dimnames")=List of 2
-##   .. .. .. ..$ : chr [1:5] "lifeExp" "pop" "gdpPercap" "year" ...
-##   .. .. .. ..$ : chr [1:4] "pop" "gdpPercap" "year" "continent"
-##   .. ..- attr(*, "term.labels")= chr [1:4] "pop" "gdpPercap" "year" "continent"
-##   .. ..- attr(*, "order")= int [1:4] 1 1 1 1
-##   .. ..- attr(*, "intercept")= int 1
-##   .. ..- attr(*, "response")= int 1
-##   .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
-##   .. ..- attr(*, "predvars")= language list(lifeExp, pop, gdpPercap, year, continent)
-##   .. ..- attr(*, "dataClasses")= Named chr [1:5] "numeric" "numeric" "numeric" "numeric" ...
-##   .. .. ..- attr(*, "names")= chr [1:5] "lifeExp" "pop" "gdpPercap" "year" ...
-##  $ model        :'data.frame':	1704 obs. of  5 variables:
-##   ..$ lifeExp  : num [1:1704] 28.8 30.3 32 34 36.1 ...
-##   ..$ pop      : int [1:1704] 8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
-##   ..$ gdpPercap: num [1:1704] 779 821 853 836 740 ...
-##   ..$ year     : int [1:1704] 1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
-##   ..$ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
-##   ..- attr(*, "terms")=Classes 'terms', 'formula'  language lifeExp ~ pop + gdpPercap + year + continent
-##   .. .. ..- attr(*, "variables")= language list(lifeExp, pop, gdpPercap, year, continent)
-##   .. .. ..- attr(*, "factors")= int [1:5, 1:4] 0 1 0 0 0 0 0 1 0 0 ...
-##   .. .. .. ..- attr(*, "dimnames")=List of 2
-##   .. .. .. .. ..$ : chr [1:5] "lifeExp" "pop" "gdpPercap" "year" ...
-##   .. .. .. .. ..$ : chr [1:4] "pop" "gdpPercap" "year" "continent"
-##   .. .. ..- attr(*, "term.labels")= chr [1:4] "pop" "gdpPercap" "year" "continent"
-##   .. .. ..- attr(*, "order")= int [1:4] 1 1 1 1
-##   .. .. ..- attr(*, "intercept")= int 1
-##   .. .. ..- attr(*, "response")= int 1
-##   .. .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
-##   .. .. ..- attr(*, "predvars")= language list(lifeExp, pop, gdpPercap, year, continent)
-##   .. .. ..- attr(*, "dataClasses")= Named chr [1:5] "numeric" "numeric" "numeric" "numeric" ...
-##   .. .. .. ..- attr(*, "names")= chr [1:5] "lifeExp" "pop" "gdpPercap" "year" ...
+##   [list output truncated]
 ##  - attr(*, "class")= chr "lm"
 ```
 ]
@@ -1180,9 +1174,9 @@ R supports many more complex models, for example:
 * `glm()` has syntax similar to `lm()` but adds a `family =` argument to specify model families and link functions like logistic regression
    + ex: `glm(x~y, family=binomial(link="logit"))`
 
-* The `lme4` package adds hierarchical (multilevel) linear models.
+* The `lme4` package adds hierarchical (multilevel) GLM models.
 
-* `lavaan` adds structural equation models.
+* `lavaan` fits structural equation models with intuitive syntax.
 
 * `plm` and `tseries` fit time series models.
 
