@@ -518,13 +518,13 @@ gapminder[1,] # First row
 --
 .small[
 ```{r}
-gapminder[1:4, 3:4] # First four rows, third and fourth column #<<
+gapminder[1:3, 3:4] # First three rows, third and fourth column #<<
 ```
 ]
 
 .pull-right[
 .footnote[
-The **colon operator** (`:`) generates a vector using the sequence of integers from its first argument to its second. `1:4` is equivalent to `c(1,2,3,4)`.
+The **colon operator** (`:`) generates a vector using the sequence of integers from its first argument to its second. `1:3` is equivalent to `c(1,2,3)`.
 ]
 ]
 ---
