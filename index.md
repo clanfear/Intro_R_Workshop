@@ -20,7 +20,7 @@ layout: default
    * [`swirl`](http://swirlstats.com/students.html): Interactive tutorials inside R.
    * [Useful RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) on R Markdown, RStudio shortcuts, etc.
    * [Code style guide](http://adv-r.had.co.nz/Style.html) for writing functions, etc.
-   * [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510)   
+   * [Good Enough Practices in Scientific Computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510): From abstract, "This paper presents a set of good computing practices that every researcher can adopt, regardless of their current level of computational skill."  
 
 ## Plotting
 

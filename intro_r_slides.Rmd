@@ -759,6 +759,7 @@ class: inverse
 ## Basic Graphics and Models
 
 ---
+
 # Histograms
 
 We can use the `hist()` function to generate a histogram of a vector:
@@ -780,7 +781,6 @@ Use `?hist` to see additional options available for customizing a histogram.
 ]
 ---
 # Scatter Plots
-
 
 .small[
 ```{r, out.height="320px"}
@@ -815,6 +815,39 @@ class(new_formula)
 The dependent variable goes on the left side of `~` and independent variables go on the right.
 
 See here for more on [formulae](https://www.datacamp.com/community/tutorials/r-formula-tutorial).
+
+---
+
+# Simple Tables
+
+`table()` creates basic cross-tabulations of vectors.
+
+```{r}
+table(mtcars$cyl, mtcars$am)
+```
+
+---
+
+# Chi-Square
+
+We can give the output from `table()` to `chisq.test()` to perform a Chi-Square test of assocation.
+
+```{r}
+chisq.test(table(mtcars$cyl, mtcars$am))
+```
+
+Note the warning here. You can use rescaled (`rescale.p=TRUE`) or simulated p-values (`simulate.p.value=TRUE`) if desired.
+
+---
+
+# T Tests
+
+T tests for mean comparisons are simple to do.
+
+```{r}
+gapminder$post_1980 <- ifelse(gapminder$year > 1980, 1, 2)
+t.test(lifeExp ~ post_1980, data=gapminder)
+```
 
 ---
 
@@ -881,6 +914,16 @@ We can also do this with `summary()`, which provides additional statistics:
 summary(lm_out)$coefficients
 ```
 ]
+
+---
+
+# ANOVA
+
+ANOVAs can be fit and summarized just like `lm()`
+
+```{r}
+summary(aov(lifeExp ~ continent, data=gapminder))
+```
 
 ---
 

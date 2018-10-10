@@ -13,7 +13,7 @@ class: center, top, title-slide
 # Introduction to R
 ## UW Tacoma
 ### Charles Lanfear
-### Oct 11, 2018<br>Updated: Oct 9, 2018
+### Oct 11, 2018<br>Updated: Oct 10, 2018
 
 ---
 
@@ -935,6 +935,7 @@ class: inverse
 ## Basic Graphics and Models
 
 ---
+
 # Histograms
 
 We can use the `hist()` function to generate a histogram of a vector:
@@ -959,7 +960,6 @@ Use `?hist` to see additional options available for customizing a histogram.
 ]
 ---
 # Scatter Plots
-
 
 .small[
 
@@ -1009,6 +1009,77 @@ class(new_formula)
 The dependent variable goes on the left side of `~` and independent variables go on the right.
 
 See here for more on [formulae](https://www.datacamp.com/community/tutorials/r-formula-tutorial).
+
+---
+
+# Simple Tables
+
+`table()` creates basic cross-tabulations of vectors.
+
+
+```r
+table(mtcars$cyl, mtcars$am)
+```
+
+```
+##    
+##      0  1
+##   4  3  8
+##   6  4  3
+##   8 12  2
+```
+
+---
+
+# Chi-Square
+
+We can give the output from `table()` to `chisq.test()` to perform a Chi-Square test of assocation.
+
+
+```r
+chisq.test(table(mtcars$cyl, mtcars$am))
+```
+
+```
+## Warning in chisq.test(table(mtcars$cyl, mtcars$am)): Chi-squared
+## approximation may be incorrect
+```
+
+```
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  table(mtcars$cyl, mtcars$am)
+## X-squared = 8.7407, df = 2, p-value = 0.01265
+```
+
+Note the warning here. You can use rescaled (`rescale.p=TRUE`) or simulated p-values (`simulate.p.value=TRUE`) if desired.
+
+---
+
+# T Tests
+
+T tests for mean comparisons are simple to do.
+
+
+```r
+gapminder$post_1980 &lt;- ifelse(gapminder$year &gt; 1980, 1, 2)
+t.test(lifeExp ~ post_1980, data=gapminder)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  lifeExp by post_1980
+## t = 17.174, df = 1694.7, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   8.791953 11.059068
+## sample estimates:
+## mean in group 1 mean in group 2 
+##        64.43719        54.51168
+```
 
 ---
 
@@ -1163,6 +1234,25 @@ summary(lm_out)$coefficients
 ## continentOceania   2.055921e+01 1.469070e+00  13.994707  3.390781e-42
 ```
 ]
+
+---
+
+# ANOVA
+
+ANOVAs can be fit and summarized just like `lm()`
+
+
+```r
+summary(aov(lifeExp ~ continent, data=gapminder))
+```
+
+```
+##               Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## continent      4 139343   34836   408.7 &lt;2e-16 ***
+## Residuals   1699 144805      85                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
 
 ---
 
