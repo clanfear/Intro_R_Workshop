@@ -9,6 +9,7 @@ layout: default
 ## Important links
 
 * [Presentation Slides](https://clanfear.github.io/Intro_R_Workshop/intro_r_slides.html)
+* [.R Script to follow along](http://clanfear.github.io/Intro_R_Workshop/intro_r_script.R)
 * [R and RStudio Installation Instructions](https://clanfear.github.io/CSSS508/docs/installation.html)
 
 ## General R Resources:

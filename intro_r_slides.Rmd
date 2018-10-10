@@ -82,7 +82,7 @@ mono_accent(base_color = "#342c5c",
 
 5. Basic Analyses
 
-7. Resources for Further Learning
+6. Resources for Further Learning
 
 ---
 class: inverse
