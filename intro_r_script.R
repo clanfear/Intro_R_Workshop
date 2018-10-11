@@ -387,7 +387,7 @@ abline(v = mean(gapminder$gdpPercap), col = "cornflowerblue") #<<
 
 
 
-# Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`dist`) gets plotted on the y-axis and the second (`speed`) goes on the x-axis.
+# Note that `lifeExp ~ gdpPercap` is a **formula** of the type `y ~ x`. The first element (`lifeExp) gets plotted on the y-axis and the second (`gdpPercap`) goes on the x-axis.
             
 # The `abline()` calls place horizontal (`h =`) or vertical (`v =`) lines at the means of the variables used in the plot. 
 
