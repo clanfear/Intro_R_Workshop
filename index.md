@@ -13,6 +13,7 @@ layout: default
 * [R and RStudio Installation Instructions](https://clanfear.github.io/CSSS508/docs/installation.html)
 * [Enabling compilation of packages](https://clanfear.github.io/CSSS508/docs/compiling.html)
 * [Panopto Recording of Workshop](https://uw.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=3a74dbec-2b0a-46c0-807e-a97601418534), recorded Oct. 11, 2018 (Requires UW NetID)
+* [YouTube Recording of Workshop](https://www.youtube.com/watch?v=HbFaPArTIjo) (Does not require UW NetID)
 
 ## General R Resources:
 
